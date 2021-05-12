@@ -1,1 +1,0 @@
-int scoree = 0;

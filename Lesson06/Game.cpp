@@ -6,7 +6,6 @@ Engine::Game::Game()
 {
 }
 
-
 Engine::Game::~Game()
 {
 }
@@ -15,7 +14,6 @@ void Engine::Game::Start(string windowTitle, unsigned int screenWidth, unsigned 
 {
 	//Initialize SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
-
 	//Tell SDL that we want a double buffered window so we don't get any flickering
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -26,7 +24,6 @@ void Engine::Game::Start(string windowTitle, unsigned int screenWidth, unsigned 
 	if (targetFrameRate > 0) {
 		targetFrameTime = 1000.0f / targetFrameRate;
 	}
-
 
 	Uint32 flags = SDL_WINDOW_OPENGL;
 
@@ -91,6 +88,8 @@ void Engine::Game::End()
 {
 	SDL_DestroyWindow(window);
 	window = NULL;
+	/*glClear(GL_COLOR_BUFFER_BIT);*/
+	/*std::exit(42);*/
 }
 
 float Engine::Game::GetDeltaTime()
