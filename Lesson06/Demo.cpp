@@ -4,8 +4,7 @@ int ovehicleX[4], ovehicleY[4];
 int i;
 Uint8* keystate;
 bool collide;
-int score;
-
+int scoreDemo;
 
 Demo::Demo()
 {
@@ -15,14 +14,18 @@ Demo::~Demo()
 {
 }
 
+gui::gui() {
+	scoreGui = scoreDemo;
+}
+
 void Demo::Init()
 {
-	score = -1;
+	scoreDemo = -1;
 	InitTextScore();
 	BuildDividerSprite();
 	BuildPlayerSprite();
-	BuildRightWallSprite();
 	BuildLeftWallSprite();
+	BuildRightWallSprite();
 	BuildEnemySprite();
 }
 
@@ -49,7 +52,6 @@ void Demo::DeInit() {
 
 void Demo::Render()
 {
-	
 		//Setting Viewport
 		glViewport(0, 0, GetScreenWidth(), GetScreenHeight());
 
@@ -59,13 +61,13 @@ void Demo::Render()
 		//Set the background color
 		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 		
-		string scoreText = to_string(score);
+		string scoreText = to_string(scoreDemo);
 
-		RenderTextScore("Score : "+scoreText, 10, 10, 1.0f, vec3(244.0f / 255.0f, 12.0f / 255.0f, 116.0f / 255.0f));
+		RenderTextScore("Score : "+scoreText, 10, 10, 1.0f, vec3(0.3, 0.77, 1));
 		DrawDividerSprite();
 		DrawPlayerSprite();
-		DrawRightWallSprite();
 		DrawLeftWallSprite();
+		DrawRightWallSprite();
 		DrawEnemySprite();
 
 	
@@ -233,7 +235,6 @@ void Demo::ControlPlayerSprite(float deltaTime)
 	collide = false;
 	if (IsCollided(xpos, ypos, frame_width, frame_height, xpos2, ypos2, frame_width2, frame_height2, xpos3, ypos3, frame_width3, frame_height3
 		, xpos5, ypos5, frame_width5, frame_height5)) {
-		xpos = oldxpos;
 		collide = true;
 	}
 
@@ -715,7 +716,7 @@ void Demo::ControlEnemy(float deltaTime)
 		//std::mt19937 gen(rd()); // seed the generator
 		//std::uniform_int_distribution<> distr(2, 3); // define the range
 		float a = 1.3 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (2.3 - 1.3)));
-		score++;
+		scoreDemo++;
 		xpos5 = (GetScreenHeight()) / a;
 	}
 
@@ -764,8 +765,6 @@ void Demo::DrawEnemySprite() {
 
 void Demo::BuildEnemySprite()
 {
-	for (size_t i = 0; i < 3; i++)
-	{
 		this->program5 = BuildShader("playerSprite.vert", "playerSprite.frag");
 
 		// Pass n to shader
@@ -783,7 +782,7 @@ void Demo::BuildEnemySprite()
 
 		// Load, create texture 
 		int width, height;
-		unsigned char* image = SOIL_load_image("carblack.png", &width, &height, 0, SOIL_LOAD_RGBA);
+		unsigned char* image = SOIL_load_image("homeranim.png", &width, &height, 0, SOIL_LOAD_RGBA);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 		SOIL_free_image_data(image);
 		glBindTexture(GL_TEXTURE_2D, 0); // Unbind texture when done, so we won't accidentily mess up our texture.
@@ -861,15 +860,14 @@ void Demo::BuildEnemySprite()
 		xpos5 = (GetScreenHeight()) / 2.3;
 		ypos5 = 35;
 		gravity5 = 0.05f;
-		yVelocity5 = 0.5f;
-		
-	}
+		yVelocity5 = 0.5f;	
 }
 
 
 bool Demo::IsCollided(float x1, float y1, float width1, float height1,
 	float x2, float y2, float width2, float height2, float x3, float y3, float width3, float height3, float x5, float y5, float width5, float height5) {
-	return (x1 < x2 + width2 && x1 + width1 > x2 && y1 < y2 + height2 && y1 + height1 > y2 || x1 < x3 + width3 && x1 + width1 > x3 && y1 < y3 + height3 && y1 + height1 > y3
+	return (x1 < x2 + width2 && x1 + width1 > x2 && y1 < y2 + height2 && y1 + height1 > y2
+		|| x1 < x3 + width3 && x1 + width1 > x3 && y1 < y3 + height3 && y1 + height1 > y3
 		|| x1 < x5 + width5 && x1 + width1 > x5 && y1 < y5 + height5 && y1 + height1 > y5);
 }
 

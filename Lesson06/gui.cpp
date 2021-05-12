@@ -4,11 +4,6 @@
 Engine::Game& gameGui = gui();
 Engine::Game& game = Demo();
 
-gui::gui()
-{
-}
-
-
 gui::~gui()
 {
 
@@ -74,12 +69,11 @@ void gui::Render()
 	mat4 projection;
 	projection = ortho(0.0f, static_cast<GLfloat>(GetScreenWidth()), static_cast<GLfloat>(GetScreenHeight()), 0.0f, -1.0f, 1.0f);
 	glUniformMatrix4fv(glGetUniformLocation(this->programgui, "projection"), 1, GL_FALSE, value_ptr(projection));
-
-	/*int scoreText = scoree;*/
-	RenderText("Top Road Car", 10, 10, 1.0f, vec3(244.0f / 255.0f, 12.0f / 255.0f, 116.0f / 255.0f));
-	RenderText2("Your score is : ", 10, 10, 1.0f, vec3(244.0f / 255.0f, 12.0f / 255.0f, 116.0f / 255.0f));
+	/*string scoreText = to_string(score);*/
+	string scoreText = to_string(scoreGui);
+	RenderText("Top Road Car", 10, 10, 1.0f, vec3(0.3, 0.77, 1));
+	RenderText2("Your score is : "+scoreText, 10, 10, 1.0f, vec3(1, 1, 1));
 	RenderButton();
-
 }
 
 void gui::InitText() {
@@ -239,7 +233,7 @@ void gui::RenderText(string text, GLfloat x, GLfloat y, GLfloat scale, vec3 colo
 		Character ch = Characters[*c];
 		/*GLfloat xpos = x + ch.Bearing.x * scale;*/
 		GLfloat xpos = (x + ch.Bearing.x * scale) + (GetScreenWidth()/3.3);
-		GLfloat ypos = (y + (this->Characters['H'].Bearing.y - ch.Bearing.y) * scale) + 20 ;
+		GLfloat ypos = (y + (this->Characters['H'].Bearing.y - ch.Bearing.y) * scale) + 50 ;
 		GLfloat w = ch.Size.x * scale;
 		GLfloat h = ch.Size.y * scale;
 		// Update VBO for each character
@@ -288,8 +282,8 @@ void gui::RenderText2(string text, GLfloat x, GLfloat y, GLfloat scale, vec3 col
 	for (c = text.begin(); c != text.end(); c++)
 	{
 		Character2 ch = Characters2[*c];
-		GLfloat xpos = (x + ch.Bearing2.x * scale) + (GetScreenWidth() / 3.3);
-		GLfloat ypos = (y + (this->Characters2['H'].Bearing2.y - ch.Bearing2.y) * scale) + 60;
+		GLfloat xpos = (x + ch.Bearing2.x * scale) + (GetScreenWidth() / 2.7);
+		GLfloat ypos = (y + (this->Characters2['H'].Bearing2.y - ch.Bearing2.y) * scale) + 90;
 		GLfloat w = ch.Size2.x * scale;
 		GLfloat h = ch.Size2.y * scale;
 		// Update VBO for each character
@@ -403,7 +397,7 @@ void gui::RenderButton() {
 		glUniform1i(glGetUniformLocation(this->programgui, "ourTexture"), i + 1);
 
 		mat4 model;
-		model = translate(model, vec3((GetScreenWidth() - button_width[i]) / 2, (i + 1) * 100, 0.0f));
+		model = translate(model, vec3((GetScreenWidth() - button_width[i]) / 2, (i + 1.5) * 100, 0.0f));
 		model = scale(model, vec3(button_width[i], button_height[i], 1));
 		glUniformMatrix4fv(glGetUniformLocation(this->programgui, "model"), 1, GL_FALSE, value_ptr(model));
 
